@@ -1,0 +1,114 @@
+---
+title: "MLR"
+author: "Madhawa Hulangamuwa"
+date: "11/9/2021"
+output: html_document
+---
+
+```{r}
+
+library(readr)
+library(forcats)
+library(performance)
+library(olsrr)
+library(mvinfluence)
+library(lmvar)
+library(ggcorrplot)
+
+
+```
+
+## Including factor 
+
+```{r cars}
+
+CSE <- read_csv("Data.csv")
+CSE <- CSE[!CSE$Close == "null", ]
+summary(CSE)
+
+
+
+CSE$pltInf <- as.character(CSE$pltInf)
+CSE$pltInf <- fct_recode(CSE$pltInf,
+  "not_influenced" = "0",
+  "influenced" = "1"
+)
+
+
+str(CSE)
+
+```
+
+## 80% datset taken for modeling
+
+```{r}
+
+
+testing = CSE[sample(1:4035,),replace=FALSE]
+testing <- testing[,c('Date','Open','High','Low','Close','Volume','pltInf')]
+View(testing)
+
+
+```
+
+## Exploratory data analysis
+
+```{r}
+
+cor(testing[,c('Open','High','Low','Close','Volume')])
+
+
+```
+
+## Base model
+
+```{r}
+
+library(kableExtra)
+library(jtools)
+
+base_model <- lm(formula = Close ~ Open + High + Low + Volume + pltInf, data = testing)
+
+summary(base_model)
+# summ(base_model, scale = FALSE, n.sd = 4)
+anova(base_model)
+
+check_model(base_model)
+
+```
+
+```{r}
+
+model2 <- lm(formula = Close ~ Open + High + Low, data = testing)
+anova(model2)
+summary(model2)
+check_model(model2)
+
+car::vif(model2)
+
+```
+
+
+```{r}
+
+
+model3 <- lm(formula = Close ~ Open + High, data = testing)
+anova(model3)
+summary(model3)
+check_model(model3)
+
+car::vif(model3)
+
+
+```
+
+
+```{r}
+
+model4 <- lm(formula = Close ~ Open, data = testing)
+anova(model4)
+summary(model4)
+check_model(model4)
+
+
+```

@@ -1,0 +1,83 @@
+---
+title: "3 months_prior"
+author: "Madhawa Hulangamuwa"
+date: "11/8/2021"
+output: html_document
+---
+
+## Political Incidents Considered
+
+## 10 octomber 2000 - Parliament election
+## 05 December 2001 - Parliament election
+## 02 April 2004 - Parliament election
+## 17 November 2005 - Mahinda rajapaksha became the president-Presidential election
+## 26 January 2010 - Mahinda Rajapaksha re-elected as the president
+## 08 & 20 April 2010 - Mahinda rajapaksha's party wins parliamentry election
+## 8 september 2010 Approves consitutional change in parliament allowing Mahinda Rajapaksha to seek unlimited number of terms.
+## 15 January 2015- Maithripala Sirisena elected as the president.
+## 17 August 2015 Parliament election 
+## 26 Octomber 2018 to 16 December 2018 - Constitutional crisis 
+## 10 November 2019 - Gotabaya Rajapaksha elected as president.
+## 05 August 2020 - Rajapaksha's party wins the parliamentry Election.
+
+```{r}
+
+library(readxl)
+library(writexl)
+
+CSE_data <- read_excel("CSE.xlsx")
+CSE <- CSE_data[!CSE_data$Close == "null", ]
+View(CSE)
+
+CSE$Open <- as.numeric(CSE$Open)
+CSE$High <- as.numeric(CSE$High)
+CSE$Low <- as.numeric(CSE$Low)
+CSE$Close <- as.numeric(CSE$Close)
+CSE$`Adj Close` <- as.numeric(CSE$`Adj Close`)
+CSE$Volume <- as.numeric(CSE$Volume)
+CSE$Date <- as.Date(CSE$Date)
+str(CSE)
+
+```
+
+## Data
+
+```{r cars}
+
+library(dplyr)
+library(tidyr)
+
+
+incident1 <- CSE[CSE$Date >= "2000-07-10" & CSE$Date <= "2001-01-10" | 
+                CSE$Date >= "2001-09-05" & CSE$Date <= "2002-03-05" |
+                CSE$Date >= "2004-01-02" & CSE$Date <= "2004-07-02" |
+                CSE$Date >= "2005-08-17" & CSE$Date <= "2006-02-17" |
+                CSE$Date >= "2009-10-26" & CSE$Date <= "2010-04-26" |
+                CSE$Date >= "2010-01-08" & CSE$Date <= "2010-07-20" |
+                CSE$Date >= "2010-06-08" & CSE$Date <= "2011-12-08" |
+                CSE$Date >= "2014-10-15" & CSE$Date <= "2015-04-15" |
+                CSE$Date >= "2015-05-17" & CSE$Date <= "2016-11-17" |
+                CSE$Date >= "2018-07-26" & CSE$Date <= "2019-03-16" |
+                CSE$Date >= "2019-08-10" & CSE$Date <= "2020-02-10" |
+                CSE$Date >= "2020-05-05" & CSE$Date <= "2020-11-05"
+                ,]
+
+new_CSE1 <- CSE %>% mutate(pltInf=as.factor(if_else(CSE$Date %in% incident1$Date, 1, 0)))
+
+str(new_CSE1)
+View(new_CSE1)
+
+
+```
+ 
+## Export
+
+```{r}
+
+write_xlsx(new_CSE1,"C:\\Users\\Madhawa Hulangamuwa\\Desktop\\3 Months Prior//Data.xlsx")
+write.csv(new_CSE1,"C:\\Users\\Madhawa Hulangamuwa\\Desktop\\3 Months Prior//Data.csv", row.names = FALSE)
+
+
+```
+
+

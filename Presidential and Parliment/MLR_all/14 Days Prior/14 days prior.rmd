@@ -1,0 +1,87 @@
+---
+title: "14 days prior"
+author: "Madhawa Hulangamuwa"
+date: "11/8/2021"
+output: html_document
+---
+
+
+## Political Incidents Considered
+
+## 10 octomber 2000 - Parliament election
+## 05 December 2001 - Parliament election
+## 02 April 2004 - Parliament election
+## 17 November 2005 - Mahinda rajapaksha became the president-Presidential election
+## 26 January 2010 - Mahinda Rajapaksha re-elected as the president
+## 08 & 20 April 2010 - Mahinda rajapaksha's party wins parliamentry election
+## 8 september 2010 Approves consitutional change in parliament allowing Mahinda Rajapaksha to seek unlimited number of terms.
+## 15 January 2015- Maithripala Sirisena elected as the president.
+## 17 August 2015 Parliament election 
+## 26 Octomber 2018 to 16 December 2018 - Constitutional crisis 
+## 10 November 2019 - Gotabaya Rajapaksha elected as president.
+## 05 August 2020 - Rajapaksha's party wins the parliamentry Election.
+
+```{r setup, include=FALSE}
+
+library(readxl)
+library(writexl)
+
+CSE_data <- read_excel("CSE.xlsx")
+CSE <- CSE_data[!CSE_data$Close == "null", ]
+View(CSE)
+
+CSE$Open <- as.numeric(CSE$Open)
+CSE$High <- as.numeric(CSE$High)
+CSE$Low <- as.numeric(CSE$Low)
+CSE$Close <- as.numeric(CSE$Close)
+CSE$`Adj Close` <- as.numeric(CSE$`Adj Close`)
+CSE$Volume <- as.numeric(CSE$Volume)
+CSE$Date <- as.Date(CSE$Date)
+str(CSE)
+
+```
+
+## 
+
+
+
+```{r cars}
+
+library(dplyr)
+library(tidyr)
+
+
+incident3 <- CSE[CSE$Date >= "2000-09-26" & CSE$Date <= "2000-10-24" | 
+                CSE$Date >= "2001-11-21" & CSE$Date <= "2002-12-19" |
+                CSE$Date >= "2004-03-19" & CSE$Date <= "2004-04-16" |
+                CSE$Date >= "2005-11-03" & CSE$Date <= "2005-12-01" |
+                CSE$Date >= "2010-01-12" & CSE$Date <= "2010-01-13" |
+                CSE$Date >= "2010-03-23" & CSE$Date <= "2010-05-04" |
+                CSE$Date >= "2010-08-23" & CSE$Date <= "2011-09-22" |
+                CSE$Date >= "2015-01-01" & CSE$Date <= "2015-01-29" |
+                CSE$Date >= "2015-08-03" & CSE$Date <= "2016-09-01" |
+                CSE$Date >= "2018-11-12" & CSE$Date <= "2019-12-10" |
+                CSE$Date >= "2019-10-26" & CSE$Date <= "2019-11-24" |
+                CSE$Date >= "2020-07-21" & CSE$Date <= "2020-08-19"
+                ,]
+
+new_CSE3 <- CSE %>% mutate(pltInf=as.factor(if_else(CSE$Date %in% incident3$Date, 1, 0)))
+
+str(new_CSE3)
+View(new_CSE3)
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r}
+
+write_xlsx(new_CSE3,"C:\\Users\\Madhawa Hulangamuwa\\Desktop\\14 Days Prior//Data.xlsx")
+write.csv(new_CSE3,"C:\\Users\\Madhawa Hulangamuwa\\Desktop\\14 Days Prior//Data.csv", row.names = FALSE)
+
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

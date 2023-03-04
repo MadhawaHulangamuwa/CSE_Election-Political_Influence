@@ -1,0 +1,81 @@
+library(dplyr)
+library(tidyr)
+
+
+## 10 october 2000 - Parliament election
+incident <- CSE[CSE$Date >= "2000-04-10" & CSE$Date <= "2001-04-10" | 
+                CSE$Date >= "2001-06-05" & CSE$Date <= "2002-06-05" |
+                CSE$Date >= "2003-10-02" & CSE$Date <= "2004-10-02" |
+                CSE$Date >= "2005-05-17" & CSE$Date <= "2006-11-17" |
+                CSE$Date >= "2009-07-26" & CSE$Date <= "2010-07-26" |
+                CSE$Date >= "2009-10-08" & CSE$Date <= "2010-10-20" |
+                CSE$Date >= "2010-03-08" & CSE$Date <= "2011-03-08" |
+                CSE$Date >= "2014-07-15" & CSE$Date <= "2015-07-15" |
+                CSE$Date >= "2015-02-17" & CSE$Date <= "2016-02-17" |
+                CSE$Date >= "2018-04-26" & CSE$Date <= "2018-06-16" |
+                CSE$Date >= "2019-05-10" & CSE$Date <= "2020-05-10" |
+                CSE$Date >= "2020-02-05" & CSE$Date <= "2021-02-05"
+                ,]
+new_CSE <- CSE %>% mutate(pltInf=as.factor(if_else(CSE$Date %in% incident1$Date, 1, 0)))
+
+
+## 05 December 2001 - Parliament election
+incident2 <- CSE[CSE$Date >= "2001-06-05" & CSE$Date <= "2002-06-05",]
+new_CSE <- new_CSE %>% mutate(pltInf=as.factor(if_else(new_CSE$Date %in% incident2$Date, 1,0)))
+
+
+## 02 April 2004 - Parliament election
+incident3 <- CSE[CSE$Date >= "2003-10-02" & CSE$Date <= "2004-10-02",]
+new_CSE <- new_CSE %>% mutate(pltInf=as.factor(if_else(CSE$Date %in% incident3$Date, 1, 0)))
+
+
+## 17 November 2005 - Mahinda rajapaksha became the president-Presidential election
+incident4 <- CSE[CSE$Date >= "2005-05-17" & CSE$Date <= "2006-11-17",]
+CSE <- CSE %>% mutate(pltInf=as.factor(if_else(CSE$Date %in% incident4$Date, 1, 0)))
+
+
+## 26 January 2010 - Mahinda Rajapaksha re-elected as the president
+incident5 <- CSE[CSE$Date >= "2009-07-26" & CSE$Date <= "2010-07-26",]
+CSE <- CSE %>% mutate(pltInf=as.factor(if_else(CSE$Date %in% incident5$Date, 1, 0)))
+
+
+## 08 & 20 April 2010 - Mahinda rajapaksha's party wins parliamentry election
+incident6 <- CSE[CSE$Date >= "2009-10-08" & CSE$Date <= "2010-10-20",]
+CSE <- CSE %>% mutate(pltInf=as.factor(if_else(CSE$Date %in% incident6$Date, 1, 0)))
+
+
+## 8 september 2010 Approves consitutional change in parliament allowing Mahinda Rajapaksha to seek unlimited number of terms.
+incident7 <- CSE[CSE$Date >= "2010-03-08" & CSE$Date <= "2011-03-08",]
+CSE <- CSE %>% mutate(pltInf=as.factor(if_else(CSE$Date %in% incident7$Date, 1, 0)))
+
+
+## 15 January 2015- Maithripala Sirisena elected as the president.
+incident8 <- CSE[CSE$Date >= "2014-07-15" & CSE$Date <= "2015-07-15",]
+CSE <- CSE %>% mutate(pltInf=as.factor(if_else(CSE$Date %in% incident8$Date, 1, 0)))
+
+
+## 17 August 2015 Parliament election
+incident9 <- CSE[CSE$Date >= "2015-02-17" & CSE$Date <= "2016-02-17",]
+CSE <- CSE %>% mutate(pltInf=as.factor(if_else(CSE$Date %in% incident9$Date, 1, 0)))
+
+
+
+##26 Octomber 2018 to 16 December 2018 - Constitutional crisis 
+incident10 <- CSE[CSE$Date >= "2018-04-26" & CSE$Date <= "2018-06-16",]
+CSE <- CSE %>% mutate(pltInf=as.factor(if_else(CSE$Date %in% incident10$Date, 1, 0)))
+
+
+
+## 10 November 2019 - Gotabaya Rajapaksha elected as president.
+incident11 <- CSE[CSE$Date >= "2019-05-10" & CSE$Date <= "2020-05-10",]
+CSE <- CSE %>% mutate(pltInf=as.factor(if_else(CSE$Date %in% incident11$Date, 1, 0)))
+
+
+
+## 05 August 2020 - Rajapaksha's party wins the parliamentry Election.
+incident12 <- CSE[CSE$Date >= "2020-02-05" & CSE$Date <= "2021-02-05",]
+CSE <- CSE %>% mutate(pltInf=as.factor(if_else(CSE$Date %in% incident12$Date, 1, 0)))
+
+
+str(CSE)
+View(CSE)

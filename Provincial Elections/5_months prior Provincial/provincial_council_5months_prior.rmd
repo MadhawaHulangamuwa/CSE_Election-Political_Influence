@@ -1,0 +1,72 @@
+---
+title: "provincial_council_5months_prior"
+author: "Madhawa Hulangamuwa"
+date: "11/11/2021"
+output: html_document
+---
+
+## Provincial Council Elections – 2014/March/29 (Uva , Southern)
+## Provincial Council Elections – 2013/september/21 (Northern , North Western)
+## Provincial Council Elections – 2012/September/08 (Eastern, North Central, Sabaragamuwa)
+## Provincial Council Elections – 2009/February/14 (Southern, Uva, Western, Central & North Western)
+## Provincial Council Elections – 2008/May/10 (Sabaragamuwa & North Central, Eastern)
+## Provincial Council Elections – 2004/April/24
+
+```{r}
+
+library(readxl)
+library(writexl)
+
+CSE_data <- read_excel("CSE.xlsx")
+CSE <- CSE_data[!CSE_data$Close == "null", ]
+View(CSE)
+
+CSE$Open <- as.numeric(CSE$Open)
+CSE$High <- as.numeric(CSE$High)
+CSE$Low <- as.numeric(CSE$Low)
+CSE$Close <- as.numeric(CSE$Close)
+CSE$`Adj Close` <- as.numeric(CSE$`Adj Close`)
+CSE$Volume <- as.numeric(CSE$Volume)
+CSE$Date <- as.Date(CSE$Date)
+str(CSE)
+
+
+
+```
+
+## R Markdown
+
+```{r}
+
+library(dplyr)
+library(tidyr)
+
+
+incident5 <- CSE[CSE$Date >= "2013-10-29" & CSE$Date <= "2014-08-29" | 
+                CSE$Date >= "2013-04-21" & CSE$Date <= "2014-02-21" |
+                CSE$Date >= "2012-04-08" & CSE$Date <= "2013-02-08" |
+                CSE$Date >= "2009-09-14" & CSE$Date <= "2006-07-14" |
+                CSE$Date >= "2007-12-10" & CSE$Date <= "2008-10-10" |
+                CSE$Date >= "2003-11-24" & CSE$Date <= "2004-09-24"
+                ,]
+
+new_CSE5 <- CSE %>% mutate(pltInf=as.factor(if_else(CSE$Date %in% incident5$Date, 1, 0)))
+
+str(new_CSE5)
+View(new_CSE5)
+
+
+
+```
+
+
+
+
+
+```{r}
+
+write_xlsx(new_CSE5,"C:\\Users\\Madhawa Hulangamuwa\\Desktop\\5_months prior Provincial//Data.xlsx")
+write.csv(new_CSE5,"C:\\Users\\Madhawa Hulangamuwa\\Desktop\\5_months prior Provincial//Data.csv", row.names = FALSE)
+
+
+```
